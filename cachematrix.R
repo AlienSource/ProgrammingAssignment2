@@ -7,6 +7,10 @@
 ## creates a matrix and does various calls and tests on:
 ## makeCacheMatrix() and cacheSolve()
 
+## For executing use this two lines in your R console:
+## > source('cachematrix.R')
+## > testMatrix()
+
 ## The returned special matrix has the following operations:
 ## - x$set(x): sets a new matrix
 ## - x$get(): returns the matrix
@@ -15,18 +19,25 @@
 ##
 makeCacheMatrix <- function(x = matrix()) {
         inversematrix <- NULL
-        
+        ## getter and setter for matrix
+        # define set function
         set <- function(newmatrix) {
                 x <<- newmatrix
                 #reset inversed matrix
                 inversematrix <<- NULL
         }
+        # define get function
         get <- function() x
         
+        ## getter and setter for inverse matrix
+        # define setinverse function
         setinverse <- function(newinverse) {
                 inversematrix <<- newinverse
         }
+        # define getinverse function
         getinverse <- function() inversematrix
+        
+        # return special matrix object with the defined functions
         list(set = set, get = get, setinverse = setinverse, getinverse=getinverse)
 }
 
@@ -35,7 +46,10 @@ makeCacheMatrix <- function(x = matrix()) {
 ## Output/returned value is an inversed matrix based on the special matrix x
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        
+        # first check whether there is already a cached inversed matrix?
         inversematrix <- x$getinverse()
+        # no? inverse and cache matrix then
         if (is.null(inversematrix)) {
                 message("solving and return inversed matrix")
                 inversematrix <- solve(x$get(), ...)
@@ -43,6 +57,7 @@ cacheSolve <- function(x, ...) {
         } else {
                 message("returning cached inversed matrix")
         }
+        # return the result
         inversematrix
 }
 
